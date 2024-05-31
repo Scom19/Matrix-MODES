@@ -13,15 +13,21 @@ def rounding_up(matrix): # заменяет все числа на 1 и 0
 
 def split_matrix(matrix, rows, cols):
     """
-    разделяет список на 25 частей (то есть разделяет весь массив, картинку на матрицу 5 на 5 клеток)
+    разделяет список на 49 частей (то есть разделяет весь массив, картинку на матрицу 7 на 7 клеток), после избавляется от крайних столбцов и строк => выводит матрицу 5 на 5
     """
-    row_size, col_size = rows // 5, cols // 5
+    row_size, col_size = rows // 7, cols // 7
     parts = []
-    for i in range(5):
-        for j in range(5):
+    for i in range(7):
+        for j in range(7):
             part = matrix[i * row_size : (i + 1) * row_size, j * col_size : (j + 1) * col_size]
             parts.append(part)
-    return parts
+
+    central_parts = []
+    for i in range(1, 6):
+        for j in range(1, 6):
+            central_parts.append(parts[i * 7 + j])
+    
+    return central_parts
 
 def replace_based_on_center(parts):
     """
