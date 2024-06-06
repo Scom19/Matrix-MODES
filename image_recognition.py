@@ -80,12 +80,23 @@ def compare_matrices(matrix1, matrices_from_json):
             return key
     return None
 
+def image_optimization(image_path):
+    """
+    Изменяет качество картинки до изображение в 70 на 70 пикселей
+    """
+    image = cv2.imread(image_path)
+    enlarged_image = cv2.resize(image, (70, 70), interpolation=cv2.INTER_CUBIC)
+    optimized_image_path = 'optimized_image.png'
+    cv2.imwrite(optimized_image_path, enlarged_image)
+    return optimized_image_path
+
 def main(picture, json_file): 
     """
     Финальная функция, что содержит в себе все предыдущие. main возвращает номер карточки и вариант её ответа, если же данная картачка не
     совпадает ни с одной из карточек из базы данных, то возвращается None. (Принимает на вход саму картинку и файл с базой данных)
     """
-    cb_img = cv2.imread(picture, 0)
+    cb_img = image_optimization(picture)
+    cb_img = cv2.imread(cb_img, 0)
     cb_img_np = np.array(cb_img)
     plt.imshow(cb_img_np, cmap='gray')
     lines, columns = cb_img.shape
