@@ -3,12 +3,12 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def rounding_up(matrix): # заменяет все числа на 1 и 0
+def rounding_up(matrix, color): # заменяет все числа на 1 и 0
     """
     массив, что содержит в себе все цвета каждого пикселя преобразует числа цветов в 1 и нолики (0 - чёрный цвет, а 1 - белый цвет)
     """
     result = np.zeros_like(matrix)
-    result[matrix > 120] = 1
+    result[matrix > color] = 1
     return result
 
 def split_matrix(matrix, rows, cols):
@@ -100,5 +100,9 @@ def main(picture, json_file):
     cb_img_np = np.array(cb_img)
     plt.imshow(cb_img_np, cmap='gray')
     lines, columns = cb_img.shape
-    the_converted_image = combine_parts(replace_based_on_center(split_matrix(rounding_up(cb_img_np), lines, columns)))
-    return compare_matrices(the_converted_image, load_json_to_matrices(json_file))
+    the_converted_image = combine_parts(replace_based_on_center(split_matrix(rounding_up(cb_img_np, 120), lines, columns)))
+    the_converted_image = compare_matrices(the_converted_image, load_json_to_matrices(json_file))
+    if the_converted_image == None:
+        option_b = combine_parts(replace_based_on_center(split_matrix(rounding_up(cb_img_np, 120), lines, columns)))
+        return compare_matrices(option_b, load_json_to_matrices(json_file))
+    return the_converted_image
